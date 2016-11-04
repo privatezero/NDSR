@@ -6,3 +6,6 @@ ffmpeg -f avfoundation -i ":0" -f nut pipe:1 | ffplay -f lavfi "amovie='pipe\:0'
 
 Example of showfreqs
 -f lavfi "amovie='input',showfreqs=mode=line:win_size=w1024:colors=magenta[out]"
+
+example of adrawgraphs for maxdiff (needs refinemen to be useful)
+astats=metadata=1:reset=1,adrawgraph=lavfi.astats.Overall.Max_difference:max=1000
