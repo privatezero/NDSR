@@ -3,3 +3,6 @@ ffmpeg -f avfoundation -i ":0" -f nut pipe:1 | ffplay -f lavfi "amovie='pipe\:0'
 
 Random example
 ffmpeg -f avfoundation -i ":0" -f nut pipe:1 | ffplay -f lavfi "amovie='pipe\:0',asplit=4[out1][a][b][c],[a]avectorscope=m=lissajous_xy:r=60:zoom=5[aa],[b]avectorscope=r=60:zoom=5[bb],[c]showspectrum=s=400x800:scale=log[cc],[aa][bb]vstack[aabb],[aabb][cc]hstack[out0]"
+
+Example of showfreqs
+-f lavfi "amovie='input',showfreqs=mode=line:win_size=w1024:colors=magenta[out]"
