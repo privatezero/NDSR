@@ -9,3 +9,6 @@ Example of showfreqs
 
 example of adrawgraphs for maxdiff (needs refinemen to be useful)
 astats=metadata=1:reset=1,adrawgraph=lavfi.astats.Overall.Max_difference:max=1000
+
+Generate and pipe sine wave
+ffmpeg -f lavfi -i "sine=frequency=400" -f flac pipe:1 |
