@@ -1,0 +1,1 @@
+ffmpeg -f avfoundation -i ":0" -f nut pipe:1 | ffplay -f lavfi "amovie='pipe\:0',asplit=2[out1][a],[a]avectorscope[out0]"
