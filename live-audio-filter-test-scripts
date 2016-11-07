@@ -2,7 +2,12 @@ ffmpeg -f avfoundation -i ":0" -f nut pipe:1 | ffplay -f lavfi "amovie='pipe\:0'
 
 
 Random example
-ffmpeg -f avfoundation -i ":0" -f flac -ar 48000 pipe:1 | ffplay -f lavfi "amovie='pipe\:0',asplit=4[out1][a][b][c],[a]showfreqs=mode=line:size=400x400:colors=magenta[aa],[b]avectorscope=r=60:zoom=5[bb],[c]showspectrum=s=400x800:scale=log[cc],[aa][bb]vstack[aabb],[aabb][cc]hstack[out0]"
+ffmpeg -f avfoundation -i ":0" -f flac -ar 48000 pipe:1 | ffplay -window_title "Skookum Player" -f lavfi "amovie='pipe\:0',asplit=4[out1][a][b][c],[a]showfreqs=mode=line:cmode=separate:size=400x400:colors=magenta[aa],[b]avectorscope=r=60:zoom=5[bb],[c]showspectrum=s=400x800:mode=combined:color=rainbow:scale=log[cc],[aa][bb]vstack[aabb],[aabb][cc]hstack[out0]"
+
+
+Example with KEXP for input signal
+ffmpeg -i http://live-mp3-128.kexp.org/ -f flac -ar 48000 pipe:1 | ffplay -window_title "Skookum Player" -f lavfi "amovie='pipe\:0',asplit=4[out1][a][b][c],[a]showfreqs=mode=line:cmode=separate:size=400x400:colors=magenta[aa],[b]avectorscope=r=60:zoom=5[bb],[c]showspectrum=s=400x800:mode=combined:color=rainbow:scale=log[cc],[aa][bb]vstack[aabb],[aabb][cc]hstack[out0]"
+
 
 Example of showfreqs
 -f lavfi "amovie='input',showfreqs=mode=line:size=400x400:colors=magenta[out]"
