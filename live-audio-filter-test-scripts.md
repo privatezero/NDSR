@@ -16,15 +16,15 @@ ffmpeg -i http://live-mp3-128.kexp.org/ -f flac -ar 48000 pipe:1 | ffplay -windo
 
 
 ##Current Recording build w/kexp input
-ffmpeg -i http://live-mp3-128.kexp.org/ -f flac -ar 96000 -sample_fmt s32 - | tee >(ffplay -window_title "Skookum Player" -f lavfi \
-"amovie='pipe\:0',asplit=6[out1][a][b][c][d][e],\
+ffmpeg -i http://live-mp3-128.kexp.org/ -f wav -c:a pcm_s24le -ar 96000 -y PIPE2REC -f flac -ar 48000 -y PIPE2PLAY | ffplay -window_title "Skookum Player"  -f lavfi \
+"amovie='PIPE2PLAY',asplit=6[out1][a][b][c][d][e],\
 [e]showvolume=w=700:c=0xff0000:r=60[e1],\
-[a]showfreqs=mode=bar:cmode=separate:fscale=log:size=300x300:colors=magenta|yellow[a1],\
+[a]showfreqs=mode=bar:cmode=separate:size=300x300:colors=magenta|yellow[a1],\
 [a1]drawbox=12:0:3:300:white@0.2[a2],[a2]drawbox=66:0:3:300:white@0.2[a3],[a3]drawbox=135:0:3:300:white@0.2[a4],[a4]drawbox=202:0:3:300:white@0.2[a5],[a5]drawbox=271:0:3:300:white@0.2[aa],\
 [b]avectorscope=s=300x300:r=60:zoom=5[bb],\
 [c]showspectrum=s=400x600:mode=combined:color=rainbow:scale=log[cc],\
 [d]astats=metadata=1:reset=1,adrawgraph=lavfi.astats.Overall.Max_level:max=20000:size=700x256[dd],\
-[aa][bb]vstack[aabb],[aabb][cc]hstack[aabbcc],[aabbcc][dd]vstack[aabbccdd],[e1][aabbccdd]vstack[out0]") | ffmpeg -i - -c:a pcm_s24le -ar 96000  ~/Desktop/test.wav 2> ~/Desktop/test.txt
+[aa][bb]vstack[aabb],[aabb][cc]hstack[aabbcc],[aabbcc][dd]vstack[aabbccdd],[e1][aabbccdd]vstack[out0]" | ffmpeg -i PIPE2REC -c copy ~/desktop/test.wav 
 
 
 
