@@ -56,3 +56,6 @@ astats=metadata=1:reset=1,adrawgraph=lavfi.astats.Overall.Max_difference:max=100
 
 Generate and pipe sine wave
 ffmpeg -f lavfi -i "sine=frequency=400" -f flac pipe:1 |
+
+Timecode example:
+"drawtext=fontfile=/Library/Fonts/Andale Mono.ttf: timecode='00\:00\:00\:00':r=100:x=(w-tw)/2: y=h-(2*lh): fontcolor=white: box=1: boxcolor=0x00000000@1"
