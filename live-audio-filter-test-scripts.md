@@ -59,3 +59,6 @@ ffmpeg -f lavfi -i "sine=frequency=400" -f flac pipe:1 |
 
 Timecode example:
 "drawtext=fontfile=/Library/Fonts/Andale Mono.ttf: timecode='00\:00\:00\:00':r=100:x=(w-tw)/2: y=h-(2*lh): fontcolor=white: box=1: boxcolor=0x00000000@1"
+
+Timecode example 2:
+"drawtext=fontfile=/Library/Fonts/Andale Mono.ttf:text='%{pts \\: hms}':fontcolor=white@0.8"
