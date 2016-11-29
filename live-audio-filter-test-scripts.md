@@ -6,7 +6,7 @@ ffmpeg -i http://live-mp3-128.kexp.org/ -f flac -ar 48000 pipe:1 | ffplay -windo
 [a1]drawbox=12:0:3:300:white@0.2[a2],[a2]drawbox=66:0:3:300:white@0.2[a3],[a3]drawbox=135:0:3:300:white@0.2[a4],[a4]drawbox=202:0:3:300:white@0.2[a5],[a5]drawbox=271:0:3:300:white@0.2[aa],\
 [b]avectorscope=s=300x300:r=60:zoom=5[bb],\
 [c]showspectrum=s=400x600:mode=combined:color=rainbow:scale=log[cc],\
-[d]astats=metadata=1:reset=1,adrawgraph=lavfi.astats.Overall.Max_level:max=20000:size=700x256[dd],\
+[d]astats=metadata=1:reset=1,adrawgraph=lavfi.astats.Overall.Peak_level:max=-1.0:min=-20.0:size=700x256[dd],\
 [aa][bb]vstack[aabb],[aabb][cc]hstack[aabbcc],[aabbcc][dd]vstack[aabbccdd],[e1][aabbccdd]vstack[z],\
 [z]drawtext=fontfile=/Library/Fonts/Andale Mono.ttf: text='%{pts \\: hms}':x=(w-tw)/2: y=h-(2*lh): fontcolor=white:fontsize=30:box=1: boxcolor=0x00000000@1[out0]"
 
