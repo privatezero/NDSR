@@ -32,7 +32,7 @@ ffmpeg -i http://live-mp3-128.kexp.org/ -f wav -c:a pcm_s24le -ar 96000 -y PIPE2
 [b1]drawgrid=x=150:y=150:c=white@0.3[bb],\
 [c]showspectrum=s=400x600:mode=combined:color=rainbow:scale=log[cc],\
 [d]astats=metadata=1:reset=1,adrawgraph=lavfi.astats.Overall.Peak_level:max=0:min=-30.0:size=700x256:bg=Black[dd],\
-[dd]drawbox=0:0:700:42:hotpink@0.1:t=42[ddd],\
+[dd]drawbox=0:0:700:42:hotpink@0.2:t=42[ddd],\
 [aa][bb]vstack[aabb],[aabb][cc]hstack[aabbcc],[aabbcc][ddd]vstack[aabbccdd],[e1][aabbccdd]vstack[z],\
 [z]drawtext=fontfile=/Library/Fonts/Andale Mono.ttf: text='%{pts \\: hms}':x=460: y=50:fontcolor=white:fontsize=30:box=1:boxcolor=0x00000000@1[out0]" | ffmpeg -i PIPE2REC -c copy ~/desktop/test.wav 
 
