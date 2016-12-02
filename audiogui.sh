@@ -10,7 +10,6 @@ _lookup_devices(){
     device_list=("$(ffmpeg -hide_banner -f avfoundation -list_devices true -i "" -f null /dev/null 2>&1 | cut -d ' ' -f6- | sed -e                  '1,/AVFoundation audio devices:/d' | grep -v '^$'| tr '\n' ',' )")
     IFS=',' read -r -a DEVICES <<< "$device_list"
     IFS="$OLDIFS"
-    
 }
 
 _master_gui(){
@@ -76,18 +75,9 @@ pashua_run() {
         fi
     done
     if [ ! "$pashuapath" ] ; then
-        echo "Error: Pashua is used to edit vrecord options but is not found."
-        if [[ "${pashuainstall}" = "" ]] ; then
-            echo "Attempting to run: brew cask install pashua"
-            if [[ "${pashuainstall}" != "Y" ]] ; then
-                brew cask install pashua
-                pashuainstall="Y"
-                pashua_run
-            else
+        echo "Error: Pashua is not found."
                 break 2
             fi
-        fi
-    else
         encoding=""
         # Get result
         result=`"$pashuapath" $encoding $pashua_configfile | sed 's/ /;;;/g'`
@@ -100,10 +90,10 @@ pashua_run() {
             varvalue="$value"
             eval $varname='$varvalue'
         done
-    fi
 } # pashua_run()
 
 _master_gui
+
 {
     echo "device=\"$device\""
     echo "sample_rate=\"$sample_rate\""
