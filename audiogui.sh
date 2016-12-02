@@ -1,8 +1,20 @@
 #!/usr/bin/env bash
 #Cascadia Now!
+config="$HOME/.$(basename "${0}").conf"
+touch "$config"
+. "$config"
+
+
+_lookup_devices(){
+    OLDIFS="$IFS"
+    device_list=("$(ffmpeg -hide_banner -f avfoundation -list_devices true -i "" -f null /dev/null 2>&1 | cut -d ' ' -f6- | sed -e                  '1,/AVFoundation audio devices:/d' | grep -v '^$'| tr '\n' ',' )")
+    IFS=',' read -r -a DEVICES <<< "$device_list"
+    IFS="$OLDIFS"
+    
+}
 
 _master_gui(){
-device_list=("$(ffmpeg -hide_banner -f avfoundation -list_devices true -i "" -f null /dev/null 2>&1 | cut -d ' ' -f6- | sed -e '1,/AVFoundation audio devices:/d' | grep -v '^$')")    
+_lookup_devices    
 gui_conf="
 # Set transparency: 0 is transparent, 1 is opaque
 *.transparency=0.95
@@ -15,19 +27,24 @@ intro.text = hello
 #Capture Device
 device.type = popup
 device.label = Select Audio Capture Device
-device.option = ${device_list[0]}
-device.option = ${device_list[1]}
+device.option = ${DEVICES[0]}
+device.option = ${DEVICES[1]}
+device.option = ${DEVICES[2]}
+device.option = ${DEVICES[3]}
+device.default = "$device"
 #Sample Rate
 sample_rate.type = radiobutton
 sample_rate.label = Select Sample Rate
 sample_rate.option = 44.1 kHz
 sample_rate.option = 48 kHz
 sample_rate.option = 96 kHz
+sample_rate.default = "$sample_rate"
 #Bit Depth
 bit_depth.type = radiobutton
 bit_depth.label = Select Bit Depth
 bit_depth.option = 16
 bit_depth.option = 24
+bit_depth.default = "$bit_depth"
 #Cancel Button
 cb.type = cancelbutton
 cb.label = Cancel
@@ -87,3 +104,9 @@ pashua_run() {
 } # pashua_run()
 
 _master_gui
+{
+    echo "device=\"$device\""
+    echo "sample_rate=\"$sample_rate\""
+    echo "bit_depth=\"$bit_depth\""
+} > "$config"
+
