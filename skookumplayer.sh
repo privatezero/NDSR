@@ -165,7 +165,7 @@ if [ "${runtype}" = "passthrough" ] ; then
     [a1]drawbox=12:0:3:300:white@0.2[a2],[a2]drawbox=66:0:3:300:white@0.2[a3],[a3]drawbox=135:0:3:300:white@0.2[a4],[a4]drawbox=202:0:3:300:white@0.2[a5],[a5]drawbox=271:0:3:300:white@0.2[aa],\
     [b]avectorscope=s=300x300:r=25:zoom=5[b1],\
     [b1]drawgrid=x=150:y=150:c=white@0.3[bb],\
-    [c]showspectrum=s=400x600:mode=combined:color=rainbow:scale=log[cc],\
+    [c]showspectrum=s=400x600:mode=combined:color=rainbow:scale=sqrt:saturation=5[cc],\
     [d]astats=metadata=1:reset=2,adrawgraph=lavfi.astats.Overall.Peak_level:max=0:min=-30.0:size=700x256:bg=Black[dd],\
     [dd]drawbox=0:0:700:42:hotpink@0.2:t=42[ddd],\
     [aa][bb]vstack[aabb],[aabb][cc]hstack[aabbcc],[aabbcc][ddd]vstack[aabbccdd],[e1][aabbccdd]vstack[z],\
@@ -182,7 +182,7 @@ mpv - --title="Skookum Player" -lavfi-complex "[aid1]asplit=6[ao][a][b][c][d][e]
 [a1]drawbox=12:0:3:300:white@0.2[a2],[a2]drawbox=66:0:3:300:white@0.2[a3],[a3]drawbox=135:0:3:300:white@0.2[a4],[a4]drawbox=202:0:3:300:white@0.2[a5],[a5]drawbox=271:0:3:300:white@0.2[aa],\
 [b]avectorscope=s=300x300:r=25:zoom=5[b1],\
 [b1]drawgrid=x=150:y=150:c=white@0.3[bb],\
-[c]showspectrum=s=400x600:mode=combined:color=rainbow:scale=log[cc],\
+[c]showspectrum=s=400x600:mode=combined:color=rainbow:scale=sqrt:saturation=5[cc],\
 [d]astats=metadata=1:reset=2,adrawgraph=lavfi.astats.Overall.Peak_level:max=0:min=-30.0:size=700x256:bg=Black[dd],\
 [dd]drawbox=0:0:700:42:hotpink@0.2:t=42[ddd],\
 [aa][bb]vstack[aabb],[aabb][cc]hstack[aabbcc],[aabbcc][ddd]vstack[aabbccdd],[e1][aabbccdd]vstack[z],\
