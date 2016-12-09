@@ -136,26 +136,24 @@ _master_gui
 } > "${config}"
 fi
 
-if [ -n "${sample_rate}" ] ; then
+if [ -n ${DEVICE_NUMBER} ] ; then
     _lookup_sample_rate "${sample_rate}"
 else 
-    echo "Please Select Sample Rate"
-    ## add options here later!!
+    echo "No Sample Rate Specified.  Setting to 96kH."
+    SAMPLE_RATE_NUMERIC="96000"
 fi
 if [ -n "${bit_depth}" ] ; then
     _lookup_bit_depth  "${bit_depth}"
 else 
-    echo "Please Select Bit depth"
-    ## add options here later!!
+    echo "No Bit Depth Specified.  Setting to 24."
+    CODEC="pcm_s24le"
 fi
 if [ -n "${device}" ] ; then
     DEVICE_NUMBER=$(echo "${device}" | cut -c 2)
 else 
-    echo "Please Select Audio Capture Device"
-    ## add options here later!!
+    echo "No Device Specified.  Attempting to Guess Device."
+    DEVICE_NUMBER="0"
 fi
-
-
 
 if [ "${runtype}" = "passthrough" ] ; then
     ffmpeg -f avfoundation -i "none:"${DEVICE_NUMBER}"" -f wav -c:a pcm_s16le -ar 44100 - |\
