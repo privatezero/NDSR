@@ -160,6 +160,7 @@ else
     DEVICE_NUMBER="0"
 fi
 if [ -z "${output}" ] ; then
+    echo "No Output Location Specified.  Setting Output to Desktop"
     output="~/Desktop"
 fi
 
