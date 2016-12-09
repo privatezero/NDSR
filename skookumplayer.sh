@@ -56,7 +56,11 @@ gui_conf="
 # intro text
 intro.width = 300
 intro.type = text
-intro.text = hello
+intro.text = Hello
+#Output Location
+output.type = openbrowser
+output.label = Output Location
+output.default = "${output}"
 #Capture Device
 device.type = popup
 device.label = Select Audio Capture Device
@@ -130,6 +134,7 @@ if [ "${runtype}" = "edit" ] ; then
 _master_gui
 
 {
+    echo "output=\"${output}\""
     echo "device=\"${device}\""
     echo "sample_rate=\"${sample_rate}\""
     echo "bit_depth=\"${bit_depth}\""
@@ -154,6 +159,9 @@ else
     echo "No Device Specified.  Attempting to Guess Device."
     DEVICE_NUMBER="0"
 fi
+if [ -z "${output}" ] ; then
+    output="~/Desktop"
+fi
 
 if [ "${runtype}" = "passthrough" ] ; then
     ffmpeg -f avfoundation -i "none:"${DEVICE_NUMBER}"" -f wav -c:a pcm_s16le -ar 44100 - |\
@@ -172,7 +180,8 @@ if [ "${runtype}" = "passthrough" ] ; then
     exit
 fi
 
-
+Echo "Please Input Item ID"
+read ITEM_ID
 mkfifo PIPE2REC
 ffmpeg -f avfoundation -i "none:"${DEVICE_NUMBER}"" -f wav -c:a "${CODEC}" -ar "${SAMPLE_RATE_NUMERIC}" -y PIPE2REC -f wav -c:a pcm_s16le -ar 44100 - |\
 ffplay -window_title "Skookum Player" -f lavfi \
@@ -186,5 +195,5 @@ ffplay -window_title "Skookum Player" -f lavfi \
 [d]astats=metadata=1:reset=1,adrawgraph=lavfi.astats.Overall.Peak_level:max=0:min=-30.0:size=700x256:bg=Black[dd],\
 [dd]drawbox=0:0:700:42:hotpink@0.2:t=42[ddd],\
 [aa][bb]vstack[aabb],[aabb][cc]hstack[aabbcc],[aabbcc][ddd]vstack[aabbccdd],[e1][aabbccdd]vstack[z],\
-[z]drawtext=fontfile=/Library/Fonts/Andale Mono.ttf: text='%{pts \\: hms}':x=460: y=50:fontcolor=white:fontsize=30:box=1:boxcolor=0x00000000@1[fps],[fps]fps=fps=30[out0]" | ffmpeg -i PIPE2REC -c copy -y ~/Desktop/test.wav
+[z]drawtext=fontfile=/Library/Fonts/Andale Mono.ttf: text='%{pts \\: hms}':x=460: y=50:fontcolor=white:fontsize=30:box=1:boxcolor=0x00000000@1[fps],[fps]fps=fps=30[out0]" | ffmpeg -i PIPE2REC -c copy "${output}"/"${ITEM_ID}".wav
 
