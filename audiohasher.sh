@@ -8,7 +8,7 @@ INPUT2=$(fpcalc -raw "$2" | tail -n1 | cut -d'=' -f2 | tr , '\n' | sort)
 #count total hashes and unique hashes
 HASH_SHARED=$(comm -12 <(echo "$INPUT1") <(echo "$INPUT2") | wc -l)
 HASH_TOTAL1=$(echo "$INPUT1" | wc -l)
-HASH_TOTAL2=$(echo "$INPUT1" | wc -l)
+HASH_TOTAL2=$(echo "$INPUT2" | wc -l)
 
 #report results
 echo "$(basename "$1") Number of Hashes: $HASH_TOTAL1"
