@@ -2,5 +2,7 @@
 
 VIDEO_HASH=$(mktemp /tmp/temp.XXXX)
 ~/ffmpeg/ffmpeg -i "${1}" -vf signature=filename="${VIDEO_HASH}":format=xml -f null -
-TRIMMED_HASH=$(xml sel -N "m=urn:mpeg:mpeg7:schema:2001" -t -m m:Mpeg7/m:DescriptionUnit/m:Descriptor/m:VideoSignatureRegion/m:VideoFrame -v "translate (normalize-space(m:FrameSignature), ' ', '')" -n "${VIDEO_HASH}")
-echo "ibase=3;obase=121;${TRIMMED_HASH}" | bc > ~/Desktop/$(basename "${1}")_hash.txt
+BASE3_HASH=$(xml sel -N "m=urn:mpeg:mpeg7:schema:2001" -t -m m:Mpeg7/m:DescriptionUnit/m:Descriptor/m:VideoSignatureRegion/m:VideoFrame -v "translate (normalize-space(m:FrameSignature), ' ', '')" -n "${VIDEO_HASH}")
+BASE16_HASH=$(echo "ibase=3;obase=121;${BASE3_HASH}" | bc)
+TRIMMED_HASH=$(echo "${BASE16_HASH}" | cut -c -10 | sort)
+echo "${TRIMMED_HASH}" > "${1}"_hash.txt
