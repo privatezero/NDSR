@@ -1,0 +1,1 @@
+ffmpeg -f lavfi -i life=life_color=cyan:death_color=black:s=960x720:r=8 -f lavfi -i anoisesrc=colour=brown -af tremolo=f=0.1:d=0.9 -f nut - | ffplay -
