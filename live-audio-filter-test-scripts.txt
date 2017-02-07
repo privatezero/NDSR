@@ -1,3 +1,17 @@
+##Cue Sheet Ideas/Examples
+
+seconds to date command
+date -j -v0H -f %s "${start_time}"  "+%M:%S:00" 2> /dev/null
+
+Basic Cue Sheet layout
+FILE "waseumc_barton15007_vandals.flac" WAVE
+  TRACK 01 AUDIO
+    INDEX 01 00:00:00
+  TRACK 02 AUDIO
+    INDEX 01 02:25:00
+  TRACK 03 AUDIO
+    INDEX 01 04:49:00
+
 ##Current working recording using FFplay
 ffmpeg -f avfoundation -i 'none:0' -f wav -c:a pcm_s24le -ar 96000 -y PIPE2REC -f wav -c:a pcm_s16le -ar 44100 - |\
 ffplay -window_title "Skookum Player" -f lavfi \
