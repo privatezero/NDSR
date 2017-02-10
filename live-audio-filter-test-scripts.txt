@@ -1,3 +1,6 @@
+## Audio ffprobe
+ffprobe -f lavfi -i "amovie=/Users/aweaver/Desktop/Downbeats.mp3,astats=metadata=1:reset=1:length=0.4[out]" -show_frames -show_versions -of xml=x=1:q=1 -noprivate | gzip > input_file.qctools.xml.gz
+
 ##Cue Sheet Ideas/Examples
 
 seconds to date command
