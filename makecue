@@ -1,0 +1,14 @@
+#!/bin/bash
+start_time=($(ffprobe -v 0 -f lavfi amovie="${1}",silencedetect=noise=-57dB:d=2 -show_entries frame_tags=lavfi.silence_start,lavfi.silence_end -of default=nk=0:nw=1 | grep TAG:lavfi.silence_end | cut -d'=' -f2 | tr "\n" " "))
+LOCATION=$(dirname "${1}")
+CUEFILE="${LOCATION}"/$(basename "${1%.*}").cue
+touch "${CUEFILE}"
+TRACK_NUMBER=2
+echo "FILE \"$(basename ${1})\" WAVE" > "${CUEFILE}"
+echo "TRACK 01 AUDIO" >> "${CUEFILE}"
+echo "INDEX 01 00:00:00" >> "${CUEFILE}"
+for i in "${start_time[@]}" ; do 
+echo "TRACK 0${TRACK_NUMBER} AUDIO" >> "${CUEFILE}"
+echo "INDEX 01 $(date -j -v0H -f %s "$i"  "+%M:%S:00" 2> /dev/null)" >> "${CUEFILE}"
+((TRACK_NUMBER++))
+done
