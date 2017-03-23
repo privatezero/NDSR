@@ -1,0 +1,31 @@
+#select xml
+xml sel -N "m=urn:mpeg:mpeg7:schema:2001" -t -m "m:Mpeg7/m:DescriptionUnit/m:Descriptor/m:VideoSignatureRegion/m:VSVideoSegment" -v m:StartFrameOfSegment -o '-' -v m:EndFrameOfSegment -o ':' -m m:BagOfWords -v "translate(.,' ','')" -o ':' -b -n /Users/aweaver/Desktop/fingerprints/Milo_signature.xml > ~/Desktop/fingerprints/milobagofwords.txt
+
+
+#add to db
+for i in $(cat ~/Desktop/fingerprints/uberbagofwords.txt); do t=$(echo "$i" | cut -d':' -f1); hash1=$(echo "$i" | cut -d':' -f2); hash2=$(echo "$i" | cut -d':' -f3); hash3=$(echo "$i" | cut -d':' -f4); hash4=$(echo "$i" | cut -d':' -f5); hash5=$(echo "$i" | cut -d':' -f6); echo "INSERT INTO hash (objectIdentifierValue,hash1,hash2,hash3,hash4,hash5,startTime) VALUES ('TEST','$hash1','$hash2','$hash3','$hash4','$hash5','$t')" | mysql --login-path=PHASH_config PHASH; done
+
+#query db
+for i in $(cat /Users/aweaver/Desktop/fingerprints/milobagofwords.txt); do 
+hash1=$(echo "$i" | cut -d':' -f2)
+CHECK1=$(echo "SELECT startTime FROM hash WHERE hash1='$hash1'" | mysql --login-path=PHASH_config PHASH)
+if [ -n "${CHECK1}" ] ; then
+    hash2=$(echo "$i" | cut -d':' -f3)
+    CHECK2=$(echo "SELECT startTime FROM hash WHERE hash1='$hash1' AND hash2='$hash2'" | mysql --login-path=PHASH_config PHASH)
+    if [ -n "${CHECK2}" ] ; then
+        hash3=$(echo "$i" | cut -d':' -f4)
+        CHECK3=$(echo "SELECT startTime FROM hash WHERE hash1='$hash1' AND hash2='$hash2' AND hash3='$hash3'" | mysql --login-path=PHASH_config PHASH)
+        if [ -n "${CHECK3}" ] ; then
+            hash4=$(echo "$i" | cut -d':' -f5)
+            CHECK4=$(echo "SELECT startTime FROM hash WHERE hash1='$hash1' AND hash2='$hash2' AND hash3='$hash3' AND hash4='$hash4'" | mysql --login-path=PHASH_config PHASH)
+            if  [ -n "${CHECK4}" ] ; then
+                hash5=$(echo "$i" | cut -d':' -f6)
+                CHECK5=$(echo "SELECT startTime FROM hash WHERE hash1='$hash1' AND hash2='$hash2' AND hash3='$hash3' AND hash4='$hash4' AND hash5='$hash5'" | mysql --login-path=PHASH_config PHASH)
+                if [ -n "${CHECK5}" ] ; then
+                    echo "$CHECK5"
+                fi
+            fi
+        fi
+    fi
+fi
+done
