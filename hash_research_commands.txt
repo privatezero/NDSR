@@ -1,3 +1,7 @@
+#create db table
+CREATE TABLE hash (hashNumber bigint NOT NULL AUTO_INCREMENT, objectIdentifierValue varchar(1000) NOT NULL,hash1 varchar(255),hash2 varchar(255),hash3 varchar(255),hash4 varchar(255),hash5 varchar(255),startTime varchar(100), PRIMARY KEY (hashNumber))
+
+
 #select xml
 xml sel -N "m=urn:mpeg:mpeg7:schema:2001" -t -m "m:Mpeg7/m:DescriptionUnit/m:Descriptor/m:VideoSignatureRegion/m:VSVideoSegment" -v m:StartFrameOfSegment -o '-' -v m:EndFrameOfSegment -o ':' -m m:BagOfWords -v "translate(.,' ','')" -o ':' -b -n /Users/aweaver/Desktop/fingerprints/Milo_signature.xml > ~/Desktop/fingerprints/milobagofwords.txt
 
