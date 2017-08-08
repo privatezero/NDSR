@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#makes a folder called qccheck inside the folder you run the script on
+mkdir qccheck
+# makes a loop that will run on every .wav file in the folder. It takes every .wav it finds and uses that as the variable i
+for i in *.wav ; do
+    #makes a variable that will be used for the name of the qc metadata dump text files. Uses variable i (name of input file), for example test.wav would turn into test.wav_qc.txt
+    qcreport="${i}"_qc.txt
+    #writes a heading for the csv to the metadata dump file
+    echo 'frame,time_stamp,peak_db' > qccheck/"${qcreport}"
+    #this is the ffprobe command that outputs all the metadata to the text file
+    ffprobe -f lavfi -i amovie="${i}",astats=metadata=1:reset=1 -show_entries frame=pkt_pts_time:frame_tags=lavfi.astats.Overall.Peak_Level -of csv >> qccheck/"${qcreport}"
+done
+
+#moves into the qccheck folder to analyse the results of the metadata dump
+cd qccheck
+
+#makes a loop that runs on every .txt file in the qccheck folder
+for i in *.txt ; do
+    # This starts a 'read' loop that takes every line in the file and assigns it to a variable called audiodata
+    while read audiodata ; do
+        #this makes a variable that contains the peak db data from each line by using the 'cut' command set to deliminate on ',' (so it takes the third value from the CSV lines)
+        peakdB=$(echo "${audiodata}" | cut -d ',' -f3)
+        #this looks ugly because bash doesn't like decimals so we have to 'pipe' our number comparison ( | is a pipe) into a command called bc. Long story short, it checks to see if the peakdB variable has a value higher than -0.3, and if it does, it executes the following steps)
+        if [ $(echo "${peakdB} >= -0.1" | bc) -ne 0 ] ; then
+            echo "DANGER $i contains high audio levels"
+            echo "${audiodata}"
+        fi
+    done < "${i}"
+done
