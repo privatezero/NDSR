@@ -1,0 +1,6 @@
+for i in $(curl -s https://archive.org/details/uwlibraries 2>&1 | grep -o -E 'href="([^"#]+)"' | cut -d'"' -f2 | grep -v http | grep -v uwlibraries); do output=$(youtube-dl -g "archive.org$i" 2>&1)
+movie=$(echo "$output" | grep mp4)
+if ! [ -z "$movie" ] ; then
+ffmpeg -ss 10 -i "$movie" -t 3 -f nut - | ffplay - -autoexit
+fi
+done
